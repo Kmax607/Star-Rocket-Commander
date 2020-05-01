@@ -33,11 +33,13 @@ def start():
   global player_pos
   global score
   global fuel
+  global mission
+  get_mission()
   check_coins()
   check_merch()
   check_fuel()
   game_over()
-  print(str(score) + " Points | " + str(fuel) + " Fuel | " + str(coins) + " Coins | " + str(ammo) + " Ammo")
+  print(str(score) + " Points | " + str(fuel) + " Fuel | " + str(coins) + " Coins | " + str(ammo) + " Ammo | " + mission)
   print()
   print_grid()
   print()
@@ -131,7 +133,7 @@ def move_up():
   elif grid5 == 4:
     grid[5] = blue("3")
   elif grid5 == 5:
-    grid[5] = blue("6")
+    grid[5] = yellow("O")
   else:
     grid[5] = "*"
   grid4 = random.randint(1,22)
@@ -175,18 +177,20 @@ def move_up():
   elif grid1 == 4:
     grid[1] = blue("3")
   elif grid1 == 5:
-    grid[1] = blue("6")
+    grid[1] = yellow("O")
   else:
     grid[1] = "*"
-  grid0 = random.randint(1,22)
+  grid0 = random.randint(1,23)
   if grid0 <= 2:
     grid[0] = "O"
   elif grid0 == 3:
     grid[0] = green("+")
   elif grid0 == 4:
     grid[0] = blue("3")
-  elif grid6 == 5:
+  elif grid0 == 5:
     grid[0] = blue("5")
+  elif grid0 == 6:
+    grid[0] = yellow("O")
   else:
     grid[0] = "*"
 
@@ -460,6 +464,7 @@ def shoot_ammo():
   global ammo
   global player_pos
   global score
+  global battleship_dead
   if ammo > 0 and player_pos == "O":
     if grid[38] == red("^"):
       before1 = grid[31]
@@ -473,7 +478,7 @@ def shoot_ammo():
           before2 = yellow("O")
         else:
           before2 = "*"
-      elif grid[31] == green("+"):
+      elif grid[31] == green("+") or grid[31] == green("O"):
         grid[31] = red("X")
         score += 100
         coin_or_no = random.randint(0,1)
@@ -482,6 +487,18 @@ def shoot_ammo():
         else:
           before1 = "*"
           before2 = "*"
+      elif grid[31] == green("O"):
+        grid[31] = yellow("O")
+        grid[30] = yellow("O")
+        grid[32] = yellow("O")
+        score += 250
+        battleship_dead = True
+      elif grid[24] == green("O"):
+        grid[24] = yellow("O")
+        grid[23] = yellow("O")
+        grid[25] = yellow("O")
+        score += 250
+        battleship_dead = True
       else:
         grid[31] = red("|")
         grid[24] = red("|")
@@ -494,7 +511,7 @@ def shoot_ammo():
     if grid[38] == red("<"):
       before1 = grid[37]
       before2 = grid[36]
-      if grid[36] == green("+"):
+      if grid[36] == green("+") or grid[36] == green("O"):
         grid[37] = red("-")
         grid[36] = red("X")
         score += 100
@@ -503,7 +520,7 @@ def shoot_ammo():
           before2 = yellow("O")
         else:
           before2 = "*"
-      elif grid[37] == green("+"):
+      elif grid[37] == green("+") or grid[37] == green("O"):
         grid[37] = red("X")
         score += 100
         coin_or_no = random.randint(0,1)
@@ -512,6 +529,12 @@ def shoot_ammo():
         else:
           before1 = "*"
           before2 = "*"
+      elif grid[36] == green("O"):
+        grid[36] = yellow("O")
+        grid[37] = yellow("O")
+        grid[35] = yellow("O")
+        score += 250
+        battleship_dead = True
       else:
         grid[37] = red("-")
         grid[36] = red("-")
@@ -524,7 +547,7 @@ def shoot_ammo():
     if grid[38] == red(">"):
       before1 = grid[39]
       before2 = grid[40]
-      if grid[40] == green("+"):
+      if grid[40] == green("+") or grid[40] == green("O"):
         grid[39] = red("-")
         grid[40] = red("X")
         score += 100
@@ -533,7 +556,7 @@ def shoot_ammo():
           before2 = yellow("O")
         else:
           before2 = "*"
-      elif grid[39] == green("+"):
+      elif grid[39] == green("+") or grid[39] == green("O"):
         grid[39] = red("X")
         score += 100
         coin_or_no = random.randint(0,1)
@@ -542,6 +565,12 @@ def shoot_ammo():
         else:
           before1 = "*"
           before2 = "*"
+      elif grid[40] == green("O"):
+        grid[40] = yellow("O")
+        grid[39] = yellow("O")
+        grid[41] = yellow("O")
+        score += 250
+        battleship_dead = True
       else:
         grid[40] = red("-")
         grid[39] = red("-")
@@ -558,12 +587,45 @@ def game_over():
   global player_pos
   global fuel
   global score
-  if player_pos == green("+") or fuel == 0:
+  if player_pos == green("+") or player_pos == green("=") or player_pos == green("O") or fuel == 0:
     print()
     print(red("GAME OVER"))
     print()
     print("FINAL SCORE - " + str(score) + " Points")
     sys.exit()
+
+mission = "Max"
+
+def get_mission():
+  global mission
+  global n_coord
+  cur_mission = random.randint(1,1)
+  if cur_mission == 1:
+    battleship()
+    mission_coord = 50 - n_coord
+    mission = "Kill the Enemy Battleship " + str(mission_coord) + "M N"
+    if mission_coord == 0:
+      grid[2] = green("=")
+      grid[3] = green("O")
+      grid[4] = green("=")
+      vuln = random.randint(1,2)
+      if vuln == 1:
+        grid[1] = "O"
+      if vuln == 2:
+        grid[5] = "O"
+      if battleship_dead == True:
+        n_coord = 0
+        cur_mission = random.randint(1,1)
+
+battleship_dead = False
+
+def battleship():
+  global battleship_dead
+  if grid[17] == green("O"):
+    before1 = grid[23]
+    before2 = grid[25]
+    grid[23] = green("+")
+    grid[25] = green("+")
 
 
 start()
