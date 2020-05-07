@@ -10,7 +10,7 @@ lasers = 0
 bombs = 0
 n_coord = 0
 
-grid = ["O", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", red("^"), "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]
+grid = ["O", "*", "*", "*", "O", "*", "*", "*", "*", "*", "*", "*", "O", "*", "*", "*", "*", "*", "*", "*", "*", "*", "O", "*", "*", "*", "*", "O", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", red("^"), "*", "*", "*", "O", "*", "*", "O", "*", "*", "*"]
 player_pos = "*"
 
 
@@ -65,6 +65,11 @@ def get_ship_placement():
   if ship_move == "e":
     move_right()
     fuel -= 1
+    score += 1
+  if ship_move == "s":
+    move_down()
+    fuel -= 1
+    n_coord -= 1
     score += 1
   if ship_move == "shoot":
     shoot_ammo()
@@ -406,6 +411,90 @@ def move_right():
     grid[48] = "*"
 
 
+def move_down():
+  global player_pos
+  grid[0] = grid[0 + 7]
+  grid[1] = grid[1 + 7]
+  grid[2] = grid[2 + 7]
+  grid[3] = grid[3 + 7]
+  grid[4] = grid[4 + 7]
+  grid[5] = grid[5 + 7]
+  grid[6] = grid[6 + 7]
+  grid[7] = grid[7 + 7]
+  grid[8] = grid[8 + 7]
+  grid[9] = grid[9 + 7]
+  grid[10] = grid[10 + 7]
+  grid[11] = grid[11 + 7]
+  grid[12] = grid[12 + 7]
+  grid[13] = grid[13 + 7]
+  grid[14] = grid[14 + 7]
+  grid[15] = grid[15 + 7]
+  grid[16] = grid[16 + 7]
+  grid[17] = grid[17 + 7]
+  grid[18] = grid[18 + 7]
+  grid[19] = grid[19 + 7]
+  grid[20] = grid[20 + 7]
+  grid[21] = grid[21 + 7]
+  grid[22] = grid[22 + 7]
+  grid[23] = grid[23 + 7]
+  grid[24] = grid[24 + 7]
+  grid[25] = grid[25 + 7]
+  grid[26] = grid[26 + 7]
+  grid[27] = grid[27 + 7]
+  grid[28] = grid[28 + 7]
+  grid[29] = grid[29 + 7]
+  grid[30] = grid[30 + 7]
+  grid[31] = player_pos
+  player_pos = grid[38 + 7]
+  grid[32] = grid[32 + 7]
+  grid[33] = grid[33 + 7]
+  grid[34] = grid[34 + 7]
+  grid[35] = grid[35 + 7]
+  grid[36] = grid[36 + 7]
+  grid[37] = grid[37 + 7]
+  grid[38 + 7] = player_pos
+  player_pos = grid[38 + 7]
+  grid[38] = red("v")
+  grid[39] = grid[39 + 7]
+  grid[40] = grid[40 + 7]
+  grid[41] = grid[41 + 7]
+  grid42 = random.randint(1,20)
+  if grid42 <= 4:
+    grid[42] = "O"
+  else:
+    grid[42] = "*"
+  grid43 = random.randint(1,20)
+  if grid43 <= 4:
+    grid[43] = "O"
+  else:
+    grid[43] = "*"
+  grid44 = random.randint(1,20)
+  if grid44 <= 4:
+    grid[44] = "O"
+  else:
+    grid[44] = "*"
+  grid45 = random.randint(1,20)
+  if grid45 <= 4:
+    grid[45] = "O"
+  else:
+    grid[45] = "*"
+  grid46 = random.randint(1,20)
+  if grid46 <= 4:
+    grid[46] = "O"
+  else:
+    grid[46] = "*"
+  grid47 = random.randint(1,20)
+  if grid47 <= 4:
+    grid[47] = "O"
+  else:
+    grid[47] = "*"
+  grid48 = random.randint(1,20)
+  if grid48 <= 4:
+    grid[48] = "O"
+  else:
+    grid[48] = "*"
+
+
 def check_coins():
   global player_pos
   global coins
@@ -478,7 +567,7 @@ def shoot_ammo():
           before2 = yellow("O")
         else:
           before2 = "*"
-      elif grid[31] == green("+") or grid[31] == green("O"):
+      elif grid[31] == green("+"):
         grid[31] = red("X")
         score += 100
         coin_or_no = random.randint(0,1)
@@ -491,12 +580,16 @@ def shoot_ammo():
         grid[31] = yellow("O")
         grid[30] = yellow("O")
         grid[32] = yellow("O")
+        before1 = yellow("O")
+        before2 = yellow("O")
         score += 250
         battleship_dead = True
       elif grid[24] == green("O"):
         grid[24] = yellow("O")
         grid[23] = yellow("O")
         grid[25] = yellow("O")
+        before1 = yellow("O")
+        before2 = yellow("O")
         score += 250
         battleship_dead = True
       else:
@@ -520,7 +613,7 @@ def shoot_ammo():
           before2 = yellow("O")
         else:
           before2 = "*"
-      elif grid[37] == green("+") or grid[37] == green("O"):
+      elif grid[37] == green("+"):
         grid[37] = red("X")
         score += 100
         coin_or_no = random.randint(0,1)
@@ -533,6 +626,8 @@ def shoot_ammo():
         grid[36] = yellow("O")
         grid[37] = yellow("O")
         grid[35] = yellow("O")
+        before1 = yellow("O")
+        before2 = yellow("O")
         score += 250
         battleship_dead = True
       else:
@@ -547,7 +642,7 @@ def shoot_ammo():
     if grid[38] == red(">"):
       before1 = grid[39]
       before2 = grid[40]
-      if grid[40] == green("+") or grid[40] == green("O"):
+      if grid[40] == green("+"):
         grid[39] = red("-")
         grid[40] = red("X")
         score += 100
@@ -556,7 +651,7 @@ def shoot_ammo():
           before2 = yellow("O")
         else:
           before2 = "*"
-      elif grid[39] == green("+") or grid[39] == green("O"):
+      elif grid[39] == green("+"):
         grid[39] = red("X")
         score += 100
         coin_or_no = random.randint(0,1)
@@ -569,6 +664,8 @@ def shoot_ammo():
         grid[40] = yellow("O")
         grid[39] = yellow("O")
         grid[41] = yellow("O")
+        before1 = yellow("O")
+        before2 = yellow("O")
         score += 250
         battleship_dead = True
       else:
@@ -616,16 +713,64 @@ def get_mission():
       if battleship_dead == True:
         n_coord = 0
         cur_mission = random.randint(1,1)
+  if cur_mission == 2:
+    battleship()
+    mission_coord = 50 - n_coord
+    mission = "Destroy the Enemy Battleship " + str(mission_coord) + "M N"
+    if mission_coord == 0:
+      grid[2] = green("=")
+      grid[3] = green("O")
+      grid[4] = green("=")
+      vuln = random.randint(1,2)
+      if vuln == 1:
+        grid[1] = "O"
+      if vuln == 2:
+        grid[5] = "O"
+      if battleship_dead == True:
+        n_coord = 0
+        cur_mission = random.randint(1,1)
 
 battleship_dead = False
 
 def battleship():
   global battleship_dead
-  if grid[17] == green("O"):
-    before1 = grid[23]
-    before2 = grid[25]
-    grid[23] = green("+")
-    grid[25] = green("+")
+  if grid[31] == green("O"):
+    grid[37] = green("+")
+    grid[39] = green("+")
+    grid[38 + 7] = green("+")
+  if grid[36] == green("O"):
+    grid[38 - 7] = green("+")
+    grid[38 + 1] = green("+")
+    grid[38 + 7] = green("+")
+  if grid[40] == green("O"):
+    grid[37] = green("+")
+    grid[39] = green("+")
+    grid[38 + 7] = green("+")
 
 
-start()
+
+def begin_program():
+  print("Welcome, commander!")
+  print()
+  tut_ornah = input("Would you like a rundown on the controls? (Y, N) ").lower()
+  if tut_ornah == "y":
+    print()
+    input(blue("Collect blue items to gain fuel "))
+    print()
+    input(yellow("Collect yellow items to gain coins "))
+    print()
+    input(green("Avoid green enemies... or else! "))
+    print()
+    input("Shoot " + green("enemies ") + "from asteroids to destroy them ")
+    print()
+    input("Fly to " + yellow("M ") + "to exchange your coins for " + red("weapons") + " and " + blue("fuel  "))
+    print()
+    input("Ready, commander? ")
+    start()
+  else:
+    print()
+    start()
+
+
+
+begin_program()
